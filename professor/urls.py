@@ -4,16 +4,17 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.views.decorators.csrf import csrf_exempt
 
-
 from . import views
-
-
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
+# from .views import LoginAPIView
+# from .views import LoginAPIView
 
 router = routers.DefaultRouter()
 router.register(r'subjects', views.SubjectsViewSet)
 router.register(r'chapters', views.ChaptersViewSet)
+router.register(r'themes', views.QuestionThemeViewSet)
+router.register(r'questions', views.QuestionViewSet)
 
 
 schema_view = get_schema_view(
@@ -30,7 +31,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # path('login/', LoginAPIView.as_view()),
+    # path('register/',  csrf_exempt(RegisterAPIView.as_view()), name='register'),
+    # path('login/get_token/', LoginAPIView.as_view()),
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include(router.urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

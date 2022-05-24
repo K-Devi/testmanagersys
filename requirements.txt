@@ -7,3 +7,4 @@ django-rest-swagger
 psycopg2
 djangorestframework~=3.13.1
 django-filter==21.1
+PyJWT~=2.4.0

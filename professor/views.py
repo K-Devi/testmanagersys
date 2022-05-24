@@ -1,32 +1,44 @@
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-
-from .models import *
-from .serializers import *
-
+from rest_framework import viewsets
+from rest_framework.exceptions import APIException
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets, status, permissions
 from rest_framework.views import APIView
-# from .renderers import UserJSONRenderer
-from rest_framework.permissions import AllowAny, IsAuthenticated
-# from rest_framework.generics import ListAPIView, CreateAPIView
-# from rest_framework.status import (
-#     HTTP_201_CREATED,
-#     HTTP_400_BAD_REQUEST
-# )
+
+# from professor.auth import create_access_token, create_refresh_token
+from professor.models import *
+from professor.serializers import *
+
+#
+# class RegisterAPIView(APIView):
+#     def post(self, request):
+#         serializer = UserSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
 
 
-# class LoginAPIView(viewsets.ModelViewSet):
-    # permission_classes = (AllowAny,)
-    # renderer_classes = (UserJSONRenderer,)
-    # serializer_class = LoginSerializer
-
-    # def post(self, request):
-    #     user = request.data.get('user', {})
-    #     serializer = self.serializer_class(data=user)
-    #     serializer.is_valid(raise_exception=True)
-    # token
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+#
+# class LoginAPIView(APIView):
+#     def post(self, request):
+#         user = Users.objects.filter(username=request.data['username']).first()
+#
+#         if not user:
+#             raise APIException('Invalid credentials!')
+#
+#         if not user.check_password(request.data['password']):
+#             raise APIException('Invalid credentials!')
+#
+#         access_token = create_access_token(user.id)
+#         refresh_token = create_refresh_token(user.id)
+#
+#         response = Response()
+#
+#         response.set_cookie(key='refreshToken', value=refresh_token, httponly=True)
+#         response.data = {
+#             'token': access_token
+#         }
+#
+#         return response
 
 
 class SubjectsViewSet(viewsets.ModelViewSet):
@@ -34,49 +46,36 @@ class SubjectsViewSet(viewsets.ModelViewSet):
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
 
+
     def list(self, request):
-        queryset = self.Subjects.objects.all()
+        queryset = Subjects.objects.all()
         serializer = SubjectSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
 
 class ChaptersViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Chapters.objects.all()
     serializer_class = ChapterSerializer
 
+class QuestionThemeViewSet(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated,)
+    queryset = Questionthemes.objects.all()
+    serializer_class = QuestionThemeSerializer
 
-#
-# def get_themes(request):
-#     chapter_id = request.GET.get('chapter_id', '')
-#     themes = Questionthemes.objects.all()
-#
-#     if chapter_id:
-#         themes = themes.filter(themes__in=[int(chapter_id)])
-#
-#     serializer = ChapterSerializer(themes, many=True)
-#     return Response(serializer.data)
-#
-#
+
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
 # def get_questions(request):
 #     theme_id = request.GET.get('theme_id', '')
-#     questions = Questions.objects.all()
-#
-#     if theme_id:
-#         questions = questions.filter(chapters__in=[int(theme_id)])
-#
-#     serializer = QuestionSerializer(questions, many=True)
-#     return Response(serializer.data)
-#
-#
-# class QuestionView(viewsets.ModelViewSet):
-#     serializer_class = QuestionSerializer
-#     queryset = Questions.objects.all()
-#
-#     def add_question(self, request):
-#         serializer = QuestionSerializer(data=request.data)
-#         if serializer.is_valid():
-#             assignment = serializer.create(request)
-#             if assignment:
-#                 return Response(status=HTTP_201_CREATED)
-#         return Response(status=HTTP_400_BAD_REQUEST)
+    queryset = Questions.objects.all()
+    #
+    # if theme_id:
+    #     questions = questions.filter(chapters__in=[int(theme_id)])
+
+    serializer_class = QuestionSerializer
+    # return Response(serializer.data)
+
+
+# def add_question(request):

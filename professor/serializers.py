@@ -4,58 +4,23 @@ from rest_framework.serializers import ModelSerializer
 
 from .models import Subjects, Chapters, Questionthemes, Questions, Users
 
-#
-# class LoginSerializer(serializers.ModelSerializer):
-    # email = serializers.CharField(max_length=255)
-    # username = serializers.CharField(max_length=255, read_only=True)
-    # password = serializers.CharField(max_length=128, write_only=True)
-    # token = serializers.CharField(max_length=255, read_only=True)
 
-    # class Meta:
-    #     model = Users
-    #     fields = [
-    #         'id',
-    #         'username',
-    #         'password'
-    #     ]
-    #     extra_kwargs = {
-    #         'password':{'write_only': True}
-    #     }
-    #
-    #     def create(self, validated_data):
-    #         password = validated_data.pop('password', None)
-    #         instance = self.Meta.model(**validated_data)
-    #         if password is not None:
-    #             instance.set_password(password)
-    #         instance.save()
-    #         return instance
+# class UserSerializer(ModelSerializer):
+#     class Meta:
+#         model = Users
+#         fields = ['username', 'email', 'password']
+#         extra_kwargs = {
+#             'password': {'write_only': True}
+#         }
 
-    # def validate(self, data):
-    #     email = data.get('email', None)
-    #     password = data.get('password', None)
-    #
-    #     if email is None:
-    #         raise serializers.ValidationError(
-    #             'An email address is required to log in.'
-    #         )
-    #
-    #     if password is None:
-    #         raise serializers.ValidationError(
-    #             'A password is required to log in.'
-    #         )
-    #
-    #     user = authenticate(email=email, password=password)
-    #
-    #     if user is None:
-    #         raise serializers.ValidationError(
-    #             'A user with this email and password was not found.'
-    #         )
-    #     return {
-    #         'email': user.email,
-    #         'username': user.username,
-    #         'token': user.token
-    #     }
 
+class userProfileSerializer(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Users
+        fields = '__all__'
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
