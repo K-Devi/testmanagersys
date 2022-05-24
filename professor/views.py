@@ -1,7 +1,7 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Subjects
+from .models import *
 from .serializers import *
 
 from rest_framework.response import Response

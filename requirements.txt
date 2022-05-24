@@ -1,8 +1,9 @@
-django
+django~=4.0.4
 django_rest_framework
 djangorestframework-simplejwt
 django-cors-headers
 drf_yasg
 django-rest-swagger
 psycopg2
-
+djangorestframework~=3.13.1
+django-filter

@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'corsheaders',
-    'professor'
+    'psycopg2',
+    'professor',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
