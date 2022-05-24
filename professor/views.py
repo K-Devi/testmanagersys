@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import Subjects
 from .serializers import *
 
@@ -5,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status, permissions
 from rest_framework.views import APIView
 # from .renderers import UserJSONRenderer
-# from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 # from rest_framework.generics import ListAPIView, CreateAPIView
 # from rest_framework.status import (
 #     HTTP_201_CREATED,
@@ -22,24 +25,24 @@ from rest_framework.views import APIView
     #     user = request.data.get('user', {})
     #     serializer = self.serializer_class(data=user)
     #     serializer.is_valid(raise_exception=True)
-    #
+    # token
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+# @csrf_exempt
+@method_decorator(csrf_exempt, name='dispatch')
 class SubjectsViewSet(viewsets.ModelViewSet):
-    # permission_classes = permissions.IsAuthenticated
+    permission_classes = (IsAuthenticated,)
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    # def list(self, request):
-    #     queryset = self.Subjects.objects.all()
-    #     serializer = SubjectSerializer(self.get_queryset(), many=True)
-    #     return Response(serializer.data)
+    def list(self, request):
+        queryset = self.Subjects.objects.all()
+        serializer = SubjectSerializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
 
 
 class ChaptersViewSet(viewsets.ModelViewSet):
-
+    permission_classes = (IsAuthenticated,)
     queryset = Chapters.objects.all()
     serializer_class = ChapterSerializer
 
