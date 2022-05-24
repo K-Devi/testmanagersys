@@ -6,4 +6,4 @@ drf_yasg
 django-rest-swagger
 psycopg2
 djangorestframework~=3.13.1
-django-filter
+django-filter==21.1

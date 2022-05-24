@@ -264,6 +264,9 @@ class Users(models.Model):
     registrationdate = models.DateTimeField(db_column='RegistrationDate')  # Field name made lowercase.
     imageid = models.ForeignKey(Images, models.DO_NOTHING, db_column='ImageId')  # Field name made lowercase.
 
+    # USERNAME_FIELD = 'username'
+    # REQUIRED_FIELDS = []
+
     class Meta:
         managed = False
         db_table = 'Users'

@@ -28,10 +28,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
     # token
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# @csrf_exempt
-@method_decorator(csrf_exempt, name='dispatch')
+
 class SubjectsViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
 
