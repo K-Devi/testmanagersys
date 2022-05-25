@@ -146,6 +146,7 @@ class Images(models.Model):
         managed = False
         db_table = 'Images'
 
+
     def __str__(self):
         return self.path
 
