@@ -27,6 +27,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8081",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8081"
+# ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+
+     'rest_framework.permissions.AllowAny',
+    )
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,32 +55,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
-    'djoser',
-    'rest_framework_swagger',
     'rest_framework.authtoken',
-    'rest_framework_simplejwt',
-    'drf_yasg',
+    'rest_framework_swagger',
+    'djoser',
     'corsheaders',
-    'psycopg2',
-    'professor',
     'django_filters',
+    'drf_yasg',
+    'psycopg2',
+
+
+    'professor',
+    'pdfgen'
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'testmanagersys.urls'
 
@@ -147,11 +165,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

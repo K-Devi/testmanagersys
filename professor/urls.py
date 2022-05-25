@@ -1,4 +1,4 @@
-from django.urls import path, include, re_path
+from django.urls import path, include
 from rest_framework import permissions, routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -31,7 +31,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # path('register/',  csrf_exempt(RegisterAPIView.as_view()), name='register'),
+# path('register/',  csrf_exempt(RegisterAPIView.as_view()), name='register'),
     # path('login/get_token/', LoginAPIView.as_view()),
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include(router.urls)),
@@ -39,5 +39,5 @@ urlpatterns = [
     path('login/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
     path('api/token/verify/', csrf_exempt(TokenVerifyView.as_view()), name='token_verify'),
-
+    # path('subjects/<int:subject_id>/', )
 ]
