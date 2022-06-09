@@ -282,15 +282,6 @@ class Users(models.Model):
     def __str__(self):
         return self.email
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Users.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.user.save()
-
 
 class Efmigrationshistory(models.Model):
     migrationid = models.CharField(db_column='MigrationId', primary_key=True, max_length=150)  # Field name made lowercase.

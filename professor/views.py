@@ -49,10 +49,8 @@ class SubjectsViewSet(viewsets.ModelViewSet):
     serializer_class = SubjectSerializer
 
 
-    def list(self, request):
-        queryset = Subjects.objects.all()
-        serializer = SubjectSerializer(self.get_queryset(), many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        return self.queryset.filter(groupsubject__groupsid=3)
 
 
 
@@ -64,8 +62,11 @@ class ChaptersViewSet(viewsets.ModelViewSet):
     serializer_class = ChapterSerializer
 
 
-    def get_queryset(self):
-        return self.queryset.filter(subjectid=3)
+    def get_queryset(self, request):
+        if request.method == 'GET':
+            subjectid = self.request.data
+            return self.queryset.filter(subjectid)
+
 
     def perform_create(self, serializer):
         serializer.save()
