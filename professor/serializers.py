@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from .models import Subjects, Chapters, Questionthemes, Questions, Users
+from .models import Subjects, Chapters, Questionthemes, Questions, Users, Topics
 
 
 # class UserSerializer(ModelSerializer):
@@ -14,13 +14,13 @@ from .models import Subjects, Chapters, Questionthemes, Questions, Users
 #         }
 
 
-class userProfileSerializer(serializers.ModelSerializer):
-
-    user = serializers.StringRelatedField(read_only=True)
-
-    class Meta:
-        model = Users
-        fields = '__all__'
+# class userProfileSerializer(serializers.ModelSerializer):
+#
+#     user = serializers.StringRelatedField(read_only=True)
+#
+#     class Meta:
+#         model = Users
+#         fields = '__all__'
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,12 +44,9 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Questions
         fields = ('id', 'body', 'active', 'questiontypeid', 'questionthemeid')
-#         hfjsl
 
 
-
-#
-# class TopicSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Topics
-#         fields = ('id', 'lesson_id', 'question', 'answer', 'op1', 'op2', 'op3')
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topics
+        fields = ('id', 'chapterid', 'name', 'timelimit')

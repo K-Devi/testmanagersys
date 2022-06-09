@@ -1,7 +1,7 @@
 from django.urls import path
-# from .pdf import pdfgen
+from .pdf import generate_pdf
 
-# urlpatterns = [
-#     path('pdf-gen/', pdfgen, name='pdf-gen'),
-# ]
+urlpatterns = [
+    path('pdf-gen/', generate_pdf, name='pdf-gen'),
+]
 

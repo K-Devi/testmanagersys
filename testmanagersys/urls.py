@@ -22,5 +22,5 @@ urlpatterns = [
     # path('', include('djoser.urls')),
     # path('', include('djoser.urls.authtoken')),
     path('', include('professor.urls')),
-    # path('', include('pdfgen.urls')),
+    path('', include('pdfgen.urls')),
 ]

@@ -42,7 +42,9 @@ from professor.serializers import *
 
 
 class SubjectsViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+
+    # http://127.0.0.1:8000/subjects/ только GET
+
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
 
@@ -53,29 +55,41 @@ class SubjectsViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+
 class ChaptersViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+
+    # http://127.0.0.1:8000/chapters/ Get список разделов Post создание новой ТОЛЬКО название раздела текстовое поле
+
     queryset = Chapters.objects.all()
     serializer_class = ChapterSerializer
 
-class QuestionThemeViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
-    queryset = Questionthemes.objects.all()
-    serializer_class = QuestionThemeSerializer
+    def get_queryset(self):
+        return self.queryset.filter(subjectid=3)
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
-
-
-class QuestionViewSet(viewsets.ModelViewSet):
-# def get_questions(request):
-#     theme_id = request.GET.get('theme_id', '')
-    queryset = Questions.objects.all()
-    #
-    # if theme_id:
-    #     questions = questions.filter(chapters__in=[int(theme_id)])
-
-    serializer_class = QuestionSerializer
-    # return Response(serializer.data)
-
-
-# def add_question(request):
+# class QuestionThemeViewSet(viewsets.ModelViewSet):
+#     # permission_classes = (IsAuthenticated,)
+#     queryset = Questionthemes.objects.all()
+#     serializer_class = QuestionThemeSerializer
+#
+#
+#
+#
+#
+# class QuestionViewSet(viewsets.ModelViewSet):
+#
+#     queryset = Questions.objects.all()
+#     serializer_class = QuestionSerializer
+#
+#     def get_queryset(self):
+#         return self.queryset.filter(created_by=self.request.user)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(created_by=self.request.user)
+#
+#     def perform_update(self):
+#         self.save()
+#

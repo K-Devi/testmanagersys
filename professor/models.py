@@ -1,3 +1,4 @@
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -5,11 +6,14 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Subjects(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
     description = models.TextField(db_column='Description', blank=True, null=True)  # Field name made lowercase.
 
@@ -22,7 +26,7 @@ class Subjects(models.Model):
 
 
 class Chapters(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     subjectid = models.ForeignKey('Subjects', models.DO_NOTHING, db_column='SubjectId')  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
@@ -78,7 +82,10 @@ class Gradequestion(models.Model):
     class Meta:
         managed = False
         db_table = 'GradeQuestion'
-        unique_together = (('gradesid', 'questionsid'),)
+
+    def __str__(self):
+        return self.gradesid.description, self.questionsid.body
+
 
 
 
@@ -93,7 +100,7 @@ class Grades(models.Model):
         db_table = 'Grades'
 
     def __str__(self):
-        return self.gradenumber
+        return self.description
 
 
 class Groupsubject(models.Model):
@@ -121,7 +128,7 @@ class Groupuser(models.Model):
 
 
 class Groups(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     facultyid = models.ForeignKey(Faculties, models.DO_NOTHING, db_column='FacultyId')  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
@@ -147,12 +154,9 @@ class Images(models.Model):
         db_table = 'Images'
 
 
-    def __str__(self):
-        return self.path
-
 
 class Questiontypes(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -164,13 +168,14 @@ class Questiontypes(models.Model):
 
 
 class Questions(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     topicid = models.ForeignKey('Topics', models.DO_NOTHING, db_column='TopicId')  # Field name made lowercase.
     imageid = models.ForeignKey(Images, models.DO_NOTHING, db_column='ImageId', blank=True, null=True)  # Field name made lowercase.
     questiontypeid = models.ForeignKey(Questiontypes, models.DO_NOTHING, db_column='QuestionTypeId')  # Field name made lowercase.
     questionthemeid = models.ForeignKey(Questionthemes, models.DO_NOTHING, db_column='QuestionThemeId')  # Field name made lowercase.
     body = models.TextField(db_column='Body', blank=True, null=True)  # Field name made lowercase.
     active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+
 
     class Meta:
         managed = False
@@ -252,6 +257,9 @@ class Topics(models.Model):
         managed = False
         db_table = 'Topics'
 
+    def __str__(self):
+        return self.name
+
 
 class Users(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
@@ -263,7 +271,7 @@ class Users(models.Model):
     middlename = models.TextField(db_column='MiddleName', blank=True, null=True)  # Field name made lowercase.
     ages = models.IntegerField(db_column='Ages')  # Field name made lowercase.
     registrationdate = models.DateTimeField(db_column='RegistrationDate')  # Field name made lowercase.
-    imageid = models.ForeignKey(Images, models.DO_NOTHING, db_column='ImageId')  # Field name made lowercase.
+    imageid = models.ForeignKey(Images, models.DO_NOTHING, db_column='ImageId', null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
