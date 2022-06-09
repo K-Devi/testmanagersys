@@ -7,6 +7,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -39,7 +40,7 @@ class Chapters(models.Model):
 
 
 class Questionthemes(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -64,7 +65,7 @@ class Chaptertheme(models.Model):
 
 
 class Faculties(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -91,7 +92,7 @@ class Gradequestion(models.Model):
 
 
 class Grades(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     gradenumber = models.IntegerField(db_column='GradeNumber')  # Field name made lowercase.
     description = models.TextField(db_column='Description', blank=True, null=True)  # Field name made lowercase.
 
@@ -169,7 +170,7 @@ class Questiontypes(models.Model):
 
 class Questions(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    topicid = models.ForeignKey('Topics', models.DO_NOTHING, db_column='TopicId')  # Field name made lowercase.
+    topicid = models.ForeignKey('Topics', models.DO_NOTHING, db_column='TopicId',default=2)  # Field name made lowercase.
     imageid = models.ForeignKey(Images, models.DO_NOTHING, db_column='ImageId', blank=True, null=True)  # Field name made lowercase.
     questiontypeid = models.ForeignKey(Questiontypes, models.DO_NOTHING, db_column='QuestionTypeId')  # Field name made lowercase.
     questionthemeid = models.ForeignKey(Questionthemes, models.DO_NOTHING, db_column='QuestionThemeId')  # Field name made lowercase.
@@ -198,7 +199,7 @@ class Roleuser(models.Model):
 
 
 class Roles(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -210,7 +211,7 @@ class Roles(models.Model):
 
 
 class Sessionanswers(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     testsessionid = models.ForeignKey('Testsessions', models.DO_NOTHING, db_column='TestSessionId')  # Field name made lowercase.
     questionid = models.ForeignKey(Questions, models.DO_NOTHING, db_column='QuestionId')  # Field name made lowercase.
     gradeid = models.ForeignKey(Grades, models.DO_NOTHING, db_column='GradeId', blank=True, null=True)  # Field name made lowercase.
@@ -223,7 +224,7 @@ class Sessionanswers(models.Model):
 
 
 class Testsessions(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
     topicid = models.ForeignKey('Topics', models.DO_NOTHING, db_column='TopicId')  # Field name made lowercase.
     startdatetime = models.DateTimeField(db_column='StartDatetime')  # Field name made lowercase.
@@ -236,7 +237,7 @@ class Testsessions(models.Model):
 
 
 class Topicrule(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     topicid = models.ForeignKey('Topics', models.DO_NOTHING, db_column='TopicId')  # Field name made lowercase.
     questiontypeid = models.ForeignKey(Questiontypes, models.DO_NOTHING, db_column='QuestionTypeId')  # Field name made lowercase.
     questionthemeid = models.ForeignKey(Questionthemes, models.DO_NOTHING, db_column='QuestionThemeId')  # Field name made lowercase.
@@ -248,7 +249,7 @@ class Topicrule(models.Model):
 
 
 class Topics(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     chapterid = models.ForeignKey(Chapters, models.DO_NOTHING, db_column='ChapterId')  # Field name made lowercase.
     name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
     timelimit = models.DurationField(db_column='TimeLimit')  # Field name made lowercase.
@@ -262,7 +263,8 @@ class Topics(models.Model):
 
 
 class Users(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     email = models.TextField(db_column='Email', blank=True, null=True)  # Field name made lowercase.
     username = models.TextField(db_column='Username', blank=True, null=True)  # Field name made lowercase.
     password = models.TextField(db_column='Password', blank=True, null=True)  # Field name made lowercase.
@@ -279,6 +281,15 @@ class Users(models.Model):
 
     def __str__(self):
         return self.email
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Users.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.user.save()
 
 
 class Efmigrationshistory(models.Model):
