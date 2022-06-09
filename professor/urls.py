@@ -14,7 +14,7 @@ router = routers.DefaultRouter()
 router.register(r'subjects', views.SubjectsViewSet)
 router.register(r'chapters', views.ChaptersViewSet)
 router.register(r'themes', views.QuestionThemeViewSet)
-router.register(r'questions', views.QuestionViewSet)
+# router.register(r'questions', views.QuestionViewSet)
 
 
 schema_view = get_schema_view(

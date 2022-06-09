@@ -71,12 +71,13 @@ class ChaptersViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 
-# class QuestionThemeViewSet(viewsets.ModelViewSet):
-#
-#     queryset = Questionthemes.objects.all()
-#     serializer_class = QuestionThemeSerializer
-#
-#
+class QuestionThemeViewSet(viewsets.ModelViewSet):
+
+    queryset = Questionthemes.objects.all()
+    serializer_class = QuestionThemeSerializer
+    # chapter_id = Questionthemes.to
+
+
 #
 #
 #
