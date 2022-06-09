@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 import base64
@@ -40,10 +41,11 @@ from professor.serializers import *
 #
 #         return response
 
-
+# @login_required
 class SubjectsViewSet(viewsets.ModelViewSet):
 
     # http://127.0.0.1:8000/subjects/ только GET
+
 
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
@@ -60,16 +62,6 @@ class ChaptersViewSet(viewsets.ModelViewSet):
 
     queryset = Chapters.objects.all()
     serializer_class = ChapterSerializer
-
-
-    def get_queryset(self, request):
-        if request.method == 'GET':
-            subjectid = self.request.data
-            return self.queryset.filter(subjectid)
-
-
-    def perform_create(self, serializer):
-        serializer.save()
 
 
 class QuestionThemeFirstViewSet(viewsets.ModelViewSet):
@@ -98,7 +90,7 @@ class QuestionThemeFirstViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def get_questions1(request):
-    questions = Questions.objects.filter(questionthemeid=2)
+    questions = Questions.objects.filter(questionthemeid=2).distinct('body')
     serializer = QuestionSerializer(questions, many=True)
     return Response(serializer.data)
 

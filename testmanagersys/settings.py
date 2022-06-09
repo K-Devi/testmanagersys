@@ -155,3 +155,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = '/Users/kd/Documents/GitHub/testmanagersys/pdfgen/templates/default'
+
+# AUTH_USER_MODEL = 'professor.models.User'

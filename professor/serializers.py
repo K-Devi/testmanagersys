@@ -13,13 +13,13 @@ from .models import Subjects, Chapters, Questionthemes, Questions, Users, Topics
 #         }
 
 
-class userProfileSerializer(serializers.ModelSerializer):
-
-    user = serializers.StringRelatedField(read_only=True)
-
-    class Meta:
-        model = Users
-        fields = '__all__'
+# class userProfileSerializer(serializers.ModelSerializer):
+#
+#     user = serializers.StringRelatedField(read_only=True)
+#
+#     class Meta:
+#         model = Users
+#         fields = '__all__'
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,9 +28,10 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ChapterSerializer(serializers.ModelSerializer):
+    subjectid = SubjectSerializer
     class Meta:
         model = Chapters
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'subjectid')
 
 
 class QuestionThemeSerializer(serializers.ModelSerializer):
