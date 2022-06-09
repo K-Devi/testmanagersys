@@ -63,6 +63,7 @@ class ChaptersViewSet(viewsets.ModelViewSet):
     queryset = Chapters.objects.all()
     serializer_class = ChapterSerializer
 
+
     def get_queryset(self):
         return self.queryset.filter(subjectid=3)
 
@@ -71,7 +72,7 @@ class ChaptersViewSet(viewsets.ModelViewSet):
 
 
 # class QuestionThemeViewSet(viewsets.ModelViewSet):
-#     # permission_classes = (IsAuthenticated,)
+#
 #     queryset = Questionthemes.objects.all()
 #     serializer_class = QuestionThemeSerializer
 #
