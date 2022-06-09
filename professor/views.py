@@ -46,7 +46,6 @@ class SubjectsViewSet(viewsets.ModelViewSet):
 
     # http://127.0.0.1:8000/subjects/ только GET
 
-
     queryset = Subjects.objects.all()
     serializer_class = SubjectSerializer
 
@@ -68,6 +67,7 @@ class QuestionThemeFirstViewSet(viewsets.ModelViewSet):
 
     queryset = Questionthemes.objects.all()
     serializer_class = QuestionThemeSerializer
+
 
     def get_queryset(self):
         return self.queryset.filter(chaptertheme__chaptersid=5)
@@ -98,14 +98,14 @@ def get_questions1(request):
 @api_view(['GET'])
 def get_questions2(request):
     if request.method == 'GET':
-        questions = Questions.objects.filter(questionthemeid=3)
+        questions = Questions.objects.filter(questionthemeid=3).distinct('body')
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data)
 
 
 @api_view(['GET'])
 def get_questions3(request):
-    questions = Questions.objects.filter(questionthemeid=4)
+    questions = Questions.objects.filter(questionthemeid=4).distinct('body')
     serializer = QuestionSerializer(questions, many=True)
     return Response(serializer.data)
 
